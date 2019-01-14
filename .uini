@@ -1,0 +1,1 @@
+open_basedir="C:\slyl\;C:\laohuji\Guard\;C:\laohuji\phpmyadmin\;C:\laohuji\temp\;C:\Windows\Temp\"

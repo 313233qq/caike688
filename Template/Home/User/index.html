@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta content="target-densitydpi=320,width=750,user-scalable=no" name="viewport" />
+    <meta content="no" name="apple-touch-fullscreen" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <title>个人中心</title>
+    <!--<link href="/statics/web/css/css.css" rel="stylesheet" type="text/css">
+    <script src="/statics/web/js/jquery.1.8.2.min.js"></script>
+    <script src="/statics/web/js/style.js"></script>-->
+    <link href="__PUBLIC__/Home//statics/web/css/css.css" rel="stylesheet" type="text/css">
+<link href="__PUBLIC__/Home//statics/web/css/red.css" rel="stylesheet" type="text/css"><script src="__PUBLIC__/Home//statics/web/js/jquery.1.8.2.min.js"></script><script src="__PUBLIC__/Home//statics/web/js/style.js"></script>
+    <!-- layer -->
+    <script src="__PUBLIC__/Home//statics/web/extend/layer/mobile/layer.js"></script>
+    <!-- layer - end -->
+</head>
+<body>
+<header class="head_my">
+    <h1>个人中心</h1>
+    <div class="headerRight">
+       <!--  <span class="set" data-href="https://1ww-pc3333.com/?m=web&c=user&a=setup">设置</span> -->
+        <!--<ul>-->
+            <!--<li class="icoNews" data-new="" data-href="https://1ww-pc3333.com/?m=web&c=message&a=index&type=1&flag_m=4"></li>-->
+            <!--<li class="icoAdd"><a href="#"></a> </li>-->
+        <!--</ul>-->
+
+    </div>
+</header>
+<section>
+    <div class="my">
+        <!--<ul>-->
+            <!--<li class="girl" data-href="https://1ww-pc3333.com/?m=web&c=user&a=userInfo"><label class="icoGirl">头像</label><i><img src="/up_files/avatar/default/head7.png" /></i></li>-->
+            <!--<li style="background:#FFFFFF"><label class="icoUsername1">账号</label><span style="color: red">pcylc596949</span></li>-->
+            <!--<li style="background:#FFFFFF">-->
+                <!--<label class="icoNickname">昵称</label>-->
+                <!--<span style="float: right">pcylc596949</span>-->
+                <!--<span> </span> -->
+            <!--</li>-->
+        <!--</ul>-->
+
+        <div class="head">
+            <div class="head_left" data-href="#">
+                <div class="icon">
+                    <img src="/up_files/avatar/default/head7.png" />
+                </div>
+                            <!--     <i class="honor_icon"><img src="/up_files/honor/level01.png"></i> -->
+                            </div>
+
+            <div class="user_info">
+                <span class="user_name">{$user.nickname}</span>
+               <!--  <span class="user_edit" data-href="https://1ww-pc3333.com/?m=web&c=user&a=userInfo"><i class="user_ico_edit"></i> 编辑个人资料</span> -->
+            </div>
+
+			            <!--<div class="head_right play" data-href="https://1ww-pc3333.com/?m=web&c=user&a=getHonor">-->
+                <!--&lt;!&ndash;<img src="/up_files/honor/badge01_01.png" alt=""/>&ndash;&gt;-->
+            <!--</div>-->
+            <div class="head_right play" data-href="?m=web&c=user&a=honorDetails"></div>
+                    </div>
+                <div class="integral">
+        	 
+<!--             <div class="nowstate">
+                <img src="__PUBLIC__/Home//up_files/honor/sbadge01.png" alt=""/>
+                <span>0</span>
+            </div> -->
+                        <div class="infostate">
+                <p class="clearfix">
+                    <span class="left">我的元宝:<em class="myIntegral">{$user.points}</em></span>
+                </p>
+<!--                 <div class="line_bg">
+                    <p class="line"></p>
+                </div> -->
+<!--                 <p class="clearfix">
+                   <span class="right">离升级还差:<em class="short">4999</em></span>                </p> -->
+            </div>
+             
+<!--             <div class="nextstate">
+                <img src="__PUBLIC__/Home//up_files/honor/sbadge02.png" alt=""/>
+                <span>4999</span>
+            </div> -->
+                    </div>
+        
+        <ul>
+            <li data-href="{:U('Home/Fen/addpage')}"><div><label class="icoWallet">在线充值</label></div></li>
+        </ul>
+        <ul>
+            <li data-href="{:U('Home/Fen/xiapage')}"><div><label class="icoAgent">快速提现</label></div></li>
+            <li data-href="{:U('Home/Run/tui')}?uid={$userinfo.id}"><div><label class="icoShare">代理分享</label><span><img src="__PUBLIC__/Home//statics/web/images/person_ercode_icon@2x.png" /></span></div></li>
+        </ul>
+        <ul>
+            <li data-href="/Home/Run/record"><div><label class="icoRecord">投注记录</label></div></li>
+                    </ul>
+        <ul>
+            <li data-href="/Home/User/fenxia"><div><label class="icoActivity">提现记录</label></div></li>
+        </ul>
+        <!--  -->
+        <!--<ul><li data-href="https://1ww-pc3333.com/?m=web&c=user&a=setup"><label class="icoSetUp">设置</label></li></ul>-->
+    </div>
+</section>
+<div class="popup" style="display:none"></div><script type="text/javascript">
+	
+    $(function(){
+        var isShow_honor = Number(1); //0关 1开
+        if(isShow_honor == 0){
+            $(".head_right").hide();
+            $(".integral").hide();
+        }
+    	var grade = Number(1);
+        var firstScore = Number(0);
+        var lastScore = Number(4999);
+        var myScore = Number(0);
+        var next_status = Number(0);
+        var is_upgrade = Number(0);  //1:需要弹出恭喜升级框，0：不用处理
+
+        //积分升级弹窗
+        if(is_upgrade == 1){
+            if(grade > 0){
+               getHonorBox();
+            }
+        }
+        //点击关闭积分升级弹窗
+        $("body").on("click",".upgrade-close",function(){
+            $(".popup").fadeOut(function(){
+                giveNotice();
+            });
+        })
+
+        //徽章动画效果
+//        if(grade == 1){
+            $(".play").css({'animation-name': 'myalter0'+grade,
+                '-moz-animation-name': 'myalter0'+grade,
+                '-webkit-animation-name': 'myalter0'+grade,
+                '-o-animation-name': 'myalter0'+grade,
+            });
+//        }else if(grade == 2){
+//            $(".play").css({'animation-name': 'myalter02',})
+//        }
+
+        //升级经验条
+        if (next_status == 1) {
+        	 var wid = myScore/myScore*500;
+             $(".line").animate({width: wid}, 2000);
+        } else {
+        	var wid = myScore/lastScore*500;
+            $(".line").animate({width: wid}, 2000);
+        }
+
+        //获取新消息
+//        getMessage();
+        //博饼活动
+        var a = "";
+        $("#bobing").click(function(e){
+            console.log(a)
+            e.preventDefault();
+        })
+
+        isActivity()
+    })
+
+    function isActivity(){
+        $.ajax({
+            url : "?m=api&c=turntable&a=fetch_activity_setting",
+            type : 'POST',
+            data : {},
+            dataType:"json",
+            success: function(data){
+                if(data.status==0){
+                    console.log(data);
+                    if(Number(data.turntable_running) == 0){
+                        $("#turntable").removeAttr("data-href");
+                        $("#turntable div").append("<span>新活动暂未开启</span>");
+//                        $("#turntable").click(function(){
+//                            layer.open({
+//                                content: '幸运大转盘活动已关闭',
+//                                skin: 'msg',
+//                                time: 2 //2秒后自动关闭
+//                            });
+//                        });
+                    }
+                    if(Number(data.bo_bing_info.state) == 0){
+                        $("#bobing").removeAttr("data-href");
+//                        $("#bobing").click(function(){
+//                            layer.open({
+//                                content: '中秋博饼活动已关闭',
+//                                skin: 'msg',
+//                                time: 2 //2秒后自动关闭
+//                            });
+//                        });
+                    }
+                    if(Number(data.christmas_info.state) == 0){
+                        $("#christmas").removeAttr("data-href");
+//                        $("#christmas").click(function(){
+//                            layer.open({
+//                                content: '双旦有礼活动已关闭',
+//                                skin: 'msg',
+//                                time: 2 //2秒后自动关闭
+//                            });
+//                        });
+                    }
+                }else{
+                    layer.open({
+                        content: data.ret_msg,
+                        skin: 'msg',
+                        time: 2 //2秒后自动关闭
+                    });
+                }
+            }
+        });
+
+    }
+
+    //获取荣誉机制状态
+    function getHonorBox() {
+        var data = {
+            "token": 'e68eq5gb5g17m2teisbt2s3913'
+        }
+        $.ajax({
+            url : "?m=web&c=user&a=getHonorBox",
+            type : 'POST',
+            data : data,
+            dataType:"json",
+            success: function(data){
+            	if (data.code == 1) {
+            		var html = '<div class="upgrade-pop"><div class="upgrade-shine_bg"></div><div class="upgrade-wrap"><div class="upgrade-con">'+
+                    '<div class="upgrade-info"></div><div class="upgrade-badge"></div>'+
+                    '<div class="upgrade-name"></div><div class="upgrade-close"></div></div></div></div>';
+		            $(".popup").html(html);
+		            $(".upgrade-badge").css("background", "url(/statics/web/images/honor/badge0"+data.grade+"@2x.png) no-repeat center center");
+		            $(".upgrade-name").css("background", "url(/statics/web/images/honor/fame0"+data.grade+"@2x.png) no-repeat center center");
+		            $(".popup").fadeIn();
+            	}
+            }
+        });
+    }
+
+    function giveNotice () {
+        var data = {
+            "token": 'e68eq5gb5g17m2teisbt2s3913'
+        }
+        $.ajax({
+            url : "?m=web&c=user&a=closeHonorBox",
+            type : 'POST',
+            data : data,
+            dataType:"json",
+            success: function(data){
+            }
+        });
+    }
+</script><nav>
+    <ul>
+        <li class="active" data-href="{:U('Home/run/index')}">首页</li>
+		 <!-- <li data-href="<?php echo U('Home/User/datoupay2');?>">充值</li> -->
+		<li href="/Home/Fen/addpage.html">充值</li>
+        <li data-href="{:U('Home/run/index')}" id="kefuUrl">客服</li>
+        
+        <!--             <li data-href="http://chat56.live800.com/live800/chatClient/chatbox.jsp?companyID=835821&configID=125193&jid=9599163510">客服</li>
+         -->
+        
+        <li data-href="{:U('Home/User/index')}">我的</li>
+
+    </ul>
+</nav><script type="text/javascript">
+    $(function() {
+        //获取当前选项
+        $.ajax({
+            url: '?m=api&c=app&a=customerType',
+            type: 'post',
+            success: function(res){
+                res=JSON.parse(res)
+                $('#kefuUrl').attr('data-href',res.info[res.info.length-1].value)
+            },
+            error: function(err){
+            }
+        })
+        var getUrlParam = function(e){
+            var array = location.search.slice(1).split('&'), obj = {};
+            for (var i = 0; i < array.length; i++){
+                var key = array[i].split('=')[0],
+                        val = array[i].split('=')[1];
+                obj[key] = val;
+            }
+            return obj[e] || null;
+        }
+        var getParam = function(url,e){
+            //console.log(url);
+            var array = url.slice(1).split('&'), obj = {};
+            for (var i = 0; i < array.length; i++){
+                var key = array[i].split('=')[0],
+                        val = array[i].split('=')[1];
+                obj[key] = val;
+            }
+            return obj[e] || null;
+        }
+
+        var n_c = getUrlParam('c');
+        var n_a = getUrlParam('a');
+        var now_href = n_c+n_a;
+        //var now_href = window.location.href;
+       // console.log(now_href);
+        $("nav ul li").each(function() {
+            var href =  $(this).attr("data-href");
+            var c = getParam(href,'c');
+            var a = getParam(href,'a');
+            var href = c+a;
+            //console.log(href);
+            if (now_href == href) {
+                $("nav ul li").removeClass("active");
+                $(this).addClass("active");
+            }
+        });
+    })
+
+
+</script>
+</body>
+</html>

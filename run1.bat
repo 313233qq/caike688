@@ -1,0 +1,2 @@
+php caiji.php 
+pause

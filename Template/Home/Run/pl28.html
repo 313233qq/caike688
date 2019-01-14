@@ -1,0 +1,63 @@
+<script type="text/javascript">
+
+</script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" style="font-size: 62px;">
+<HEAD>
+    <title>　</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/new/css/index.css" />
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="__PUBLIC__/Home/new/css/page.css" />
+</HEAD>
+<BODY  style="    background: white;">
+<header>
+    <a onclick="history.go(-1)"><i class="ico02 back fl"></i></a>
+    <h2><?php echo $_GET['game']?>走势图</h2>
+    <i class="ico null"></i>
+    <i class="ico plus qx45 fr"></i>
+    <i class="ico plus qx0 fr"></i>
+    <!-- <a onclick="showMask()"><i class="ico service fr"></i></a> -->
+    <include file="Template/Home/Run/home.html"/>
+</header>
+<div class="headblank"></div>
+<div class="gmfix pl" >
+    <table class="qushi">
+        <tr>
+            <th>期号</th>
+            <th>值</th>
+            <th>大</th>
+            <th>小</th>
+            <th>单</th>
+            <th>双</th>
+            <th>大单</th>
+            <th>小单</th>
+            <th>大双</th>
+            <th>小双</th>
+        </tr>
+
+    <volist name="kjlist" id="vo">
+
+        <tr>
+            <td>{$vo.periodnumber}</td>
+            <td><span class="span2">{$vo.tema}</span></td>
+            <td> <if condition="$vo.tema gt 13"><span class="span3">{$vo.tema_dx}</span></if></td>
+            <td><if condition="$vo.tema lt 14"><span class="span4">{$vo.tema_dx}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '单'"><span class="span5">{$vo.tema_ds}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '双'"><span class="span6">{$vo.tema_ds}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '单' && $vo.tema gt 13"><span class="span7">{$vo.tema_dx}{$vo.tema_ds}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '单' && $vo.tema lt 14"><span class="span8">{$vo.tema_dx}{$vo.tema_ds}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '双' && $vo.tema gt 13"><span class="span9">{$vo.tema_dx}{$vo.tema_ds}</span></if></td>
+            <td><if condition="$vo.tema_ds eq '双' && $vo.tema lt 14"><span class="span10">{$vo.tema_dx}{$vo.tema_ds}</span></if></td>
+
+
+        </tr>
+    </volist>
+    </table>
+</div>
+</body>
+</html>
+
+
+
