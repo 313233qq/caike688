@@ -17,6 +17,7 @@ class FenController extends BaseController{
 			$pay['zfb_paycode'] = $info1['kefu'];
 			
 		}
+		 
 		$this->assign('pay',$pay);
 		$this->display();
 	}

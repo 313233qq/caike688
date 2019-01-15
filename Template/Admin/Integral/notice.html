@@ -126,13 +126,49 @@
 <script src="__PUBLIC__/Common/layer/layer.js"></script>
 <script>
 
+
     function del(id){
         layer.confirm('确定要彻底删除吗？', {
             btn: ['确定','取消'] //按钮
         }, function(){
-            window.location.href="/Admin/Integral/notice/delid/" + id + ""
+            layer.closeAll('dialog');
+            $.ajax({
+
+                url:"/Admin/Integral/delnotice/delid/"+id,
+
+                type:"get",
+
+                dataType:'json',
+
+                cache: false,
+
+                contentType: false,
+
+                processData: false,
+
+                success:function(data){
+                    layer.msg(data.info);
+                    if(data.status==1){
+                        layer.msg(data.info, function(index){
+                            layer.close(index);
+                            window.location.href=data.url;
+                        });
+                    }else{
+                        layer.msg(data.info);
+                        return false;
+                    }
+
+                },
+
+
+
+            });
+
+
+
         });
     }
+
     $(function(){
         $('#signform').ajaxForm({
             beforeSubmit: checkForm,
@@ -160,7 +196,7 @@
                 return false;
             }
         }
-    });
+   });
 </script>
 </body>
 

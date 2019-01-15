@@ -4,7 +4,7 @@ namespace Admin\Controller;
 use Think\Controller;
 
 class IntegralController extends BaseController{
-	
+
 	public function lists(){
 		$nickname = I('nickname');
 		$integral = M('integral');
@@ -12,7 +12,7 @@ class IntegralController extends BaseController{
 		$map = array();
 		$start = strtotime(str_replace("+"," ",I('starttime')));
 		$end = strtotime(str_replace("+"," ",I('endtime')));
-		
+
 		if($time){
 			// $start = strtotime($time.'00:00:00');
 			// $end = strtotime($time.'23:59:59');
@@ -35,12 +35,12 @@ class IntegralController extends BaseController{
 			$map['time'] = array(array('egt',$start),array('elt',$end),'and');
 		}
 
-		
+
 		$sum_data = array(
 			'add' => 0,
 			'xia' => 0,
 		);
-	
+
 		if($nickname){
 			if (is_numeric($nickname)) {
 				$map['username'] = $nickname;
@@ -52,7 +52,7 @@ class IntegralController extends BaseController{
 			$page = new \Think\Page($count,10);
 			$show = $page->show();
 			$list = $integral->where($map)->limit($page->firstRow.','.$page->listRows)->order("id DESC")->select();
-				
+
 			} else{
 				$map['nickname'] = $nickname;
 				$count = $integral->where($map)->count();
@@ -66,7 +66,7 @@ class IntegralController extends BaseController{
 			}
 
 
-			
+
 		}else{
 			$count = $integral->where($map)->count();
 			$page = new \Think\Page($count,10);
@@ -94,7 +94,7 @@ class IntegralController extends BaseController{
 		$this->assign('time',$time);
 		$this->display('lists');
 	}
-	
+
 	protected function send($content){
 		// 指明给谁推送，为空表示向所有在线用户推送
 		$to_uid = "";
@@ -103,7 +103,7 @@ class IntegralController extends BaseController{
 		$post_data = array(
 		   "type" => "publish",
 		   "content" => json_encode($content),
-		   "to" => $to_uid, 
+		   "to" => $to_uid,
 		);
 		$ch = curl_init ();
 		curl_setopt ( $ch, CURLOPT_URL, $push_api_url );
@@ -123,18 +123,7 @@ class IntegralController extends BaseController{
             echo "未授权或授权已过期";exit;
         }
 
-        if (!empty(I('delid'))){
-            $id = I('delid');
-            $res = M('notice')->where("id = $id")->delete();
-            if ($res) {
-                M('notice')->where("id = $id")->delete();
-            }
-            if($res){
-                $this->success('删除成功！');
-            }else{
-                $this->error('删除失败！');
-            }
-        }
+
         if(IS_POST){
             $notice = M('notice');
 
@@ -168,12 +157,32 @@ class IntegralController extends BaseController{
             $this->display();
         }
     }
+
+    public function delnotice(){
+        if(!IS_AJAX) {
+            $this->error('提交方式不正确');
+        }else{
+
+            $id = I('delid');
+            if (!empty($id)){
+            $res = M('notice')->where("id = $id")->delete();
+            if ($res) {
+                M('notice')->where("id = $id")->delete();
+            }
+            if($res){
+                $this->success('删除成功！');
+            }else{
+                $this->error('删除失败！');
+            }
+        }
+        }
+    }
 	public function gonggao(){
 		$auth = auth_check(C('auth_code'),$_SERVER['HTTP_HOST']);
 		if (!$auth) {
 			echo "未授权或授权已过期";exit;
 		}
-    	
+
 		if(IS_POST){
 			$gongao = I('gonggao');
 			$message  = array(
@@ -199,7 +208,7 @@ class IntegralController extends BaseController{
 			$this->display();
 		}
 	}
-	
+
 	public function index(){
 		if(IS_POST){
 			if(!IS_AJAX){
@@ -214,7 +223,7 @@ class IntegralController extends BaseController{
 				$res2 = M('user')->where("id = $userid")->setInc('points',$points);
 				if($res2){
 					$info = M('user')->where("id = $userid")->find();
-					
+
 					//充值记录
 					$data['uid'] = $userid;
 					$data['t_id'] = $info['t_id'];
@@ -226,7 +235,7 @@ class IntegralController extends BaseController{
 					$data['ip'] = get_client_ip();
 					$data['balance'] = $info['points'];
 					M('integral')->add($data);
-					
+
 					//是否有人推荐
 					if($info['t_id'] and C('fenxiao_set') == 1){
 						if($points>=C('fenxiao_min')){//最低充值
@@ -275,7 +284,7 @@ class IntegralController extends BaseController{
 					}else{
 						$this->success('充值成功,跳转中~',U('Admin/Member/index'),1);
 					}
-					
+
 				}else{
 					$this->error('充值失败！');
 				}
@@ -293,9 +302,9 @@ class IntegralController extends BaseController{
 			$this->assign('fid',$fid);
 			$this->display();
 		}
-		
+
 	}
-	
+
 	public function index2(){
 		$file_tmp="tmp.txt";
 		file_put_contents($file_tmp, '测试写入',FILE_APPEND);
@@ -303,7 +312,7 @@ class IntegralController extends BaseController{
 		$key_="ert34543";//接口KEY  自己修改下 软件上和这个设置一样就行
 		$md5key="3gdf3ewr";//MD5加密字符串 自己修改下 软件上和这个设置一样就行
 		//软件接口地址 http://域名/mcbpay/apipay.php?payno=#name&tno=#tno&money=#money&sign=#sign&key=接口KEY
-	
+
 		$getkey=$_REQUEST['key'];//接收参数key
 		$tno=$_REQUEST['tno'];//接收参数tno 交易号
 		$payno=$_REQUEST['payno'];//接收参数payno 一般是用户名 用户ID
@@ -321,12 +330,12 @@ class IntegralController extends BaseController{
 		}else if($typ==5){
 			$typname='微信充值';
 		}
-		
+
 		if(!$tno)exit('没有订单号');
 		if(!$payno)exit('没有付款说明');
 		if($getkey!=$key_)exit('KEY错误');
 		if(strtoupper($sign)!=strtoupper(md5($tno.$payno.$money.$md5key)))exit('签名错误');
-			
+
 		$userid = $payno;
 		$points = intval($money);
 		if(!preg_match('/^[1-9]\d*$/',$points)){
@@ -335,7 +344,7 @@ class IntegralController extends BaseController{
 		$res2 = M('user')->where("id = $userid")->setInc('points',$points);
 		if($res2){
 			$info = M('user')->where("id = $userid")->find();
-			
+
 			//充值记录
 			$data['uid'] = $userid;
 			$data['t_id'] = $info['t_id'];
@@ -347,7 +356,7 @@ class IntegralController extends BaseController{
 			$data['ip'] = get_client_ip();
 			$data['balance'] = $info['points'];
 			M('integral')->add($data);
-			
+
 			//是否有人推荐
 			if($info['t_id'] and C('fenxiao_set') == 1){
 				if($points>=C('fenxiao_min')){//最低充值
@@ -396,11 +405,11 @@ class IntegralController extends BaseController{
 			}else{
 				$this->success('充值成功,跳转中~',U('Admin/Member/index'),1);
 			}
-			
+
 		}else{
 			$this->error('充值失败！');
 		}
-		
+
 	}
 
 	public function agent_index(){
@@ -427,7 +436,7 @@ class IntegralController extends BaseController{
 			$this->assign('userinfo',$userinfo);
 			$this->display();
 		}
-		
+
 	}
 
 	protected function send_fen($content){
@@ -438,7 +447,7 @@ class IntegralController extends BaseController{
 		$post_data = array(
 		   "type" => "publish",
 		   "content" => json_encode($content),
-		   "to" => $to_uid, 
+		   "to" => $to_uid,
 		);
 		$ch = curl_init ();
 		curl_setopt ( $ch, CURLOPT_URL, $push_api_url );
@@ -452,7 +461,7 @@ class IntegralController extends BaseController{
 		return $return;
 	}
 
-	
+
 	public function under(){
 		if(IS_POST){
 			if(!IS_AJAX){
@@ -470,7 +479,7 @@ class IntegralController extends BaseController{
 				}
 				$res2 = M('user')->where("id = $userid")->setDec('points',$points);
 				if($res2){
-					
+
 					//下分记录
 					$data['uid'] = $userid;
 					$data['t_id'] = $info['t_id'];
@@ -482,7 +491,7 @@ class IntegralController extends BaseController{
 					$data['ip'] = get_client_ip();
 					$data['balance'] = $info['points']-$points;
 					M('integral')->add($data);
-					
+
 					$log = array(
 						'username' => session('admin')['username'],
 						'type' => 2,
@@ -522,7 +531,7 @@ class IntegralController extends BaseController{
 					}else{
 						$this->success('下分成功,跳转中~',U('Admin/Member/index'),1);
 					}
-					
+
 				}else{
 					$this->error('下分失败！');
 				}
@@ -541,7 +550,7 @@ class IntegralController extends BaseController{
 			$this->display();
 		}
 	}
-	
+
 }
 
 
